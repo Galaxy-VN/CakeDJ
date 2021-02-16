@@ -18,6 +18,10 @@ public class ChannelManageCommand implements ICommand {
         String operation = ctx.getArgs().get(0);
         switch (operation) {
             case "add":
+                if (ctx.getArgs().size() < 2) {
+                    EmbedUtils.errorMessage(ctx.getChannel(), "Please enter channel ID");
+                    return;
+                }
                 String toAdd = ctx.getArgs().get(1);
                 if (
                         Commons.isNaN(toAdd)
@@ -33,21 +37,26 @@ public class ChannelManageCommand implements ICommand {
                 break;
             case "remove":
                 List<String> channels = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels;
-                EmbedBuilder builder = new EmbedBuilder()
-                        .setColor(Color.GREEN)
-                        .setTitle("Channels List");
-                for (String s : channels) {
-                    GuildChannel channel;
-                    if (ctx.getGuild().getGuildChannelById(s) == null) continue;
-                    else channel = ctx.getGuild().getGuildChannelById(s);
-                    builder.addField(
-                            "`" + channels.indexOf(s) + "` `" + channel.getName() + "`",
-                            "ID: " + channel.getId(),
-                            false
-                    );
+                if (channels.isEmpty()) {
+                    EmbedUtils.errorMessage(ctx.getChannel(), "There's nothing for you to remove");
+                    return;
                 }
-                ctx.getChannel().sendMessage(builder.build()).queue();
-                if (ctx.getArgs().size() < 3) return;
+                if (ctx.getArgs().size() < 2) {
+                    EmbedBuilder builder = new EmbedBuilder()
+                            .setColor(Color.GREEN)
+                            .setTitle("Channels List");
+                    for (String s : channels) {
+                        GuildChannel channel;
+                        if (ctx.getGuild().getGuildChannelById(s) == null) continue;
+                        else channel = ctx.getGuild().getGuildChannelById(s);
+                        builder.addField(
+                                "`" + channels.indexOf(s) + "` `" + channel.getName() + "`",
+                                "ID: " + channel.getId(),
+                                false
+                        );
+                    }
+                    ctx.getChannel().sendMessage(builder.build()).queue();
+                }
                 String toRemove = ctx.getArgs().get(1);
                 if (Commons.isNaN(toRemove)) {
                     EmbedUtils.errorMessage(ctx.getChannel(), "Invalid ID");
@@ -86,7 +95,7 @@ public class ChannelManageCommand implements ICommand {
 
     @Override
     public int argsLength() {
-        return 2;
+        return 1;
     }
 
     @Override
