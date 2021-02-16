@@ -65,20 +65,30 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
         super.onGuildVoiceLeave(event);
-        VoiceChannel botVC = event.getGuild().getAudioManager().getConnectedChannel();
-        if (botVC == null) return;
-        AudioPlayer audio = PlayerManager.getInstance().getMusicManager(event.getGuild()).audioPlayer;
-        if (audio == null) return;
-        if (event.getMember().getUser().equals(event.getJDA().getSelfUser())) {
-            audio.destroy();
+        if (event.getMember().equals(event.getGuild().getSelfMember())) {
+            DatabaseUtils.updateGuildSetting(event.getGuild(), "is247", false);
+            PlayerManager.getInstance().getMusicManager(event.getGuild()).audioPlayer.destroy();
+            PlayerManager.getInstance().getMusicManager(event.getGuild()).scheduler.queue.clear();
+            PlayerManager.getInstance().getMusicManager(event.getGuild()).scheduler.previousTrack.clear();
+            event.getGuild().getAudioManager().closeAudioConnection();
             return;
         }
-        if (event.getChannelLeft().equals(botVC)) {
-            long members = botVC.getMembers().stream().filter((user) -> !user.getUser().isBot()).count();
-            if (members == 0) {
-                audio.destroy();
-                event.getGuild().getAudioManager().closeAudioConnection();
-            }
+        if (event.getMember().getUser().isBot()) return;
+        if (DatabaseUtils.getGuildSetting(event.getGuild()).is247) return;
+        VoiceChannel botVC = event.getGuild().getAudioManager().getConnectedChannel();
+        if (botVC == null) return;
+        VoiceChannel leftVC = event.getGuild().getVoiceChannelById(event.getChannelLeft().getId());
+        if (leftVC == null) return;
+        if (botVC.getId().equalsIgnoreCase(leftVC.getId())) {
+            TaskUtils.setTimeout(() -> {
+                long count = event.getChannelLeft().getMembers().stream().filter(
+                        member -> !member.getUser().isBot()
+                ).count();
+                if (count == 0) {
+                    PlayerManager.getInstance().getMusicManager(event.getGuild()).audioPlayer.destroy();
+                    event.getGuild().getAudioManager().closeAudioConnection();
+                }
+            }, 30000);
         }
     }
 
