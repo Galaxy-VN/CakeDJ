@@ -19,6 +19,7 @@ public class PlayCommand implements ICommand {
         VoiceChannel botVoice = ctx.getGuild().getAudioManager().getConnectedChannel();
         if (botVoice == null) {
             ctx.getGuild().getAudioManager().openAudioConnection(memberVoice);
+            ctx.getGuild().getAudioManager().setSelfDeafened(true);
         } else if (memberVoice != botVoice) {
             EmbedUtils.errorMessage(ctx.getChannel(), "Please connect to the same voice channel");
             return;
