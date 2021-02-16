@@ -2,7 +2,7 @@
 
 Build with JDA4 and LavaPlayer. Aim for better user experience
 
-![Maven Build](https://github.com/JustAPieOP/CakeDJ/workflows/Java%20CI%20with%20Maven/badge.svg)
+![Maven build](https://github.com/JustAPieOP/CakeDJ/workflows/Maven%20build/badge.svg)
 
 **Requirements**
 - Java 11 or newer
