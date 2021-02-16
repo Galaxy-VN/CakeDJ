@@ -34,6 +34,7 @@ public class CommandManager {
         addCommand(new PingCommand());
         // Music
         addCommand(new ClearCommand());
+        addCommand(new EarrapeCommand());
         addCommand(new JoinCommand());
         addCommand(new LeaveCommand());
         addCommand(new MoveCommand());

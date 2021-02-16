@@ -14,6 +14,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public final LinkedList<AudioTrack> previousTrack;
 
     public boolean queueLoop = false;
+    public boolean earrape = false;
 
     public TrackScheduler(AudioPlayer player) {
         this.player = player;

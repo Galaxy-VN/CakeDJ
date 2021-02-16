@@ -2,8 +2,10 @@ package me.JustAPie.CakeDJ;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
+import me.JustAPie.CakeDJ.Models.GuildConfig;
 import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
+import me.JustAPie.CakeDJ.Utils.EmbedUtils;
 import me.JustAPie.CakeDJ.Utils.TaskUtils;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -45,11 +47,18 @@ public class Listeners extends ListenerAdapter {
         super.onGuildMessageReceived(event);
         if (event.getMessage().isWebhookMessage()) return;
         if (event.getMessage().getAuthor().isBot()) return;
-        if (event.getMessage().getContentRaw().startsWith(DatabaseUtils.getGuildSetting(event.getGuild()).prefix)) {
-            if (DatabaseUtils.getGuildSetting(event.getGuild()).channelRestrict) {
-                if (!DatabaseUtils.getGuildSetting(event.getGuild()).djOnlyChannels.contains(event.getChannel().getId())) return;
+        GuildConfig guildConfig = DatabaseUtils.getGuildSetting(event.getGuild());
+        if (event.getMessage().getContentRaw().startsWith(guildConfig.prefix)) {
+            if (guildConfig.channelRestrict) {
+                if (!guildConfig.djOnlyChannels.contains(event.getChannel().getId())) return;
             }
-            manager.execute(event, DatabaseUtils.getGuildSetting(event.getGuild()).prefix);
+            manager.execute(event, guildConfig.prefix);
+        } else {
+            if (
+                    event.getMessage().getContentRaw().contains("<@" + Commons.getConfig("clientid") + ">")
+            ) {
+                EmbedUtils.successMessage(event.getChannel(), "My prefix here is `" + guildConfig.prefix + "`");
+            }
         }
     }
 
