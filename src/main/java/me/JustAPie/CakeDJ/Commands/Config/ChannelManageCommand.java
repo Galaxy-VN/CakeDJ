@@ -21,14 +21,15 @@ public class ChannelManageCommand implements ICommand {
                 String toAdd = ctx.getArgs().get(1);
                 if (
                         Commons.isNaN(toAdd)
-                        || ctx.getGuild().getCategoryById(toAdd) == null
+                        || ctx.getGuild().getGuildChannelById(toAdd) == null
                 ) {
-                    EmbedUtils.errorMessage(ctx.getChannel(), "Invalid volume");
+                    EmbedUtils.errorMessage(ctx.getChannel(), "Invalid channel");
                     return;
                 }
                 List<String> list = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels;
                 list.add(toAdd);
                 DatabaseUtils.updateGuildSetting(ctx.getGuild(), "djOnlyChannels", list);
+                EmbedUtils.successMessage(ctx.getChannel(), "Channel added");
                 break;
             case "remove":
                 List<String> channels = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels;
