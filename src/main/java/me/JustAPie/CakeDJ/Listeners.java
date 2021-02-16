@@ -2,7 +2,10 @@ package me.JustAPie.CakeDJ;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
+import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
+import me.JustAPie.CakeDJ.Utils.TaskUtils;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -10,17 +13,30 @@ import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.TimerTask;
+
 public class Listeners extends ListenerAdapter {
     private static final Logger log = LoggerFactory.getLogger(Listeners.class);
+    public static final CommandManager manager =  new CommandManager();
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         super.onReady(event);
         log.info(String.format("Logged in as %s", event.getJDA().getSelfUser().getAsTag()));
+        event.getJDA().getPresence().setPresence(Activity.playing(
+                "Handling " + manager.commands.size() + " commands"
+        ), true);
+        TaskUtils.setInterval(new TimerTask() {
+            @Override
+            public void run() {
+                updateStats(event.getGuildTotalCount());
+            }
+        }, (long) 1e4);
     }
 
     @Override
@@ -32,7 +48,7 @@ public class Listeners extends ListenerAdapter {
             if (DatabaseUtils.getGuildSetting(event.getGuild()).channelRestrict) {
                 if (!DatabaseUtils.getGuildSetting(event.getGuild()).djOnlyChannels.contains(event.getChannel().getId())) return;
             }
-            new CommandManager().execute(event, DatabaseUtils.getGuildSetting(event.getGuild()).prefix);
+            manager.execute(event, DatabaseUtils.getGuildSetting(event.getGuild()).prefix);
         }
     }
 
@@ -66,5 +82,16 @@ public class Listeners extends ListenerAdapter {
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         super.onGuildLeave(event);
         DatabaseUtils.deleteGuild(event.getGuild());
+    }
+
+    private void updateStats(int serverCount) {
+        DiscordBotListAPI api;
+        if (!Commons.getConfig("dbltoken").isEmpty()) {
+            api = new DiscordBotListAPI.Builder()
+                    .token(Commons.getConfig("dbltoken"))
+                    .botId(Commons.getConfig("clientid"))
+                    .build();
+            api.setStats(serverCount);
+        }
     }
 }
