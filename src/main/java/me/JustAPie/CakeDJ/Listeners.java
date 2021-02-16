@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -82,6 +83,12 @@ public class Listeners extends ListenerAdapter {
     public void onGuildLeave(@NotNull GuildLeaveEvent event) {
         super.onGuildLeave(event);
         DatabaseUtils.deleteGuild(event.getGuild());
+    }
+
+    @Override
+    public void onGuildUpdateName(@NotNull GuildUpdateNameEvent event) {
+        super.onGuildUpdateName(event);
+        DatabaseUtils.updateGuildSetting(event.getGuild(), "guildName", event.getGuild().getName());
     }
 
     private void updateStats(int serverCount) {
