@@ -3,6 +3,7 @@ package me.JustAPie.CakeDJ.Commands.Music;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.CommandContext;
 import me.JustAPie.CakeDJ.ICommand;
+import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
 import me.JustAPie.CakeDJ.Utils.EmbedUtils;
 import net.dv8tion.jda.api.Permission;
@@ -31,6 +32,7 @@ public class PlayCommand implements ICommand {
             }
         } else {
             String toPlay = String.join(" ", ctx.getArgs());
+            if (!Commons.isUrl(toPlay)) toPlay = "ytsearch:" + toPlay;
             PlayerManager.getInstance().loadAndPlay(ctx.getChannel(), toPlay, ctx.getMember().getUser());
             PlayerManager.getInstance().getMusicManager(ctx.getGuild()).audioPlayer.setVolume(
                     DatabaseUtils.getGuildSetting(ctx.getGuild()).defaultVolume

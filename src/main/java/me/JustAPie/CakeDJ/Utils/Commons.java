@@ -4,7 +4,19 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class Commons {
+    public static boolean isUrl(String url) {
+        try {
+            new URI(url);
+            return true;
+        } catch (URISyntaxException e) {
+            return false;
+        }
+    }
+
     public static String getConfig(String key) {
         key = key.toUpperCase();
         return Dotenv.load().get(key);
