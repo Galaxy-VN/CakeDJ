@@ -16,7 +16,7 @@ public class SkipCommand implements ICommand {
             EmbedUtils.successMessage(ctx.getChannel(), "Turning loop mode off");
             gm.scheduler.queueLoop = false;
         }
-        gm.scheduler.nextTrack();
+        gm.scheduler.nextTrack(gm.audioPlayer.getPlayingTrack());
         EmbedUtils.successMessage(ctx.getChannel(), "Skipped");
     }
 

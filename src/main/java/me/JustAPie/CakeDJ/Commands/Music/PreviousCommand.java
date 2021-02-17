@@ -30,7 +30,7 @@ public class PreviousCommand implements ICommand {
             guildMusicManager.scheduler.queue.addFirst(current.makeClone());
         }
         guildMusicManager.scheduler.queue.addFirst(toAdd);
-        guildMusicManager.scheduler.nextTrack();
+        guildMusicManager.scheduler.nextTrack(guildMusicManager.audioPlayer.getPlayingTrack());
         ctx.getChannel().sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.GREEN)

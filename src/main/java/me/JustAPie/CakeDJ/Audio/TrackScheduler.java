@@ -28,11 +28,11 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
-    public void nextTrack() {
-        AudioTrack clone = this.player.getPlayingTrack().makeClone();
+    public void nextTrack(AudioTrack track) {
+        AudioTrack clone = track.makeClone();
         if (queueLoop) queue.offerLast(clone);
         else previousTrack.offerLast(clone);
-        this.player.startTrack(this.queue.poll(), false);
+        this.player.startTrack(this.queue.poll(), true);
     }
 
     public void shuffle() {
@@ -46,7 +46,7 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason.mayStartNext) {
-            nextTrack();
+            nextTrack(track);
         }
     }
 }
