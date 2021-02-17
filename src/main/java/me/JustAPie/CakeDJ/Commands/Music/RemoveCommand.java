@@ -16,7 +16,7 @@ public class RemoveCommand implements ICommand {
         TrackScheduler scheduler = manager.scheduler;
         if (
                 Commons.isNaN(toChooseStr)
-                || Integer.parseInt(toChooseStr) >= scheduler.queue.size()
+                || Integer.parseInt(toChooseStr) > scheduler.queue.size()
                 || Integer.parseInt(toChooseStr) <= 0
         ) {
             EmbedUtils.errorMessage(ctx.getChannel(), "Invalid song");
