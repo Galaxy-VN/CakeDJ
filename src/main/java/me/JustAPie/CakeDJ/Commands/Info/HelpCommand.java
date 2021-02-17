@@ -22,28 +22,28 @@ public class HelpCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx)  {
         String prefix = DatabaseUtils.getGuildSetting(ctx.getGuild()).prefix;
+        EmbedBuilder embed = new EmbedBuilder()
+                .setColor(Color.YELLOW)
+                .setTitle("List of commands")
+                .setFooter("Prefix: " + prefix + " | Use " + prefix + getUsage() + " for more information");
         if (ctx.getArgs().size() == 0) {
-            StringBuilder str = new StringBuilder();
             List<String> cat = this.manager.commands.stream().map(ICommand::getCategory).distinct().collect(Collectors.toList());
             cat.forEach(
                     (ct) -> {
-                        if (Collections.singletonList(cat).indexOf(ct) != 0) str.append("\n");
-                        str.append("**__").append(ct).append("__**\n");
+                        StringBuilder str = new StringBuilder("`");
                         this.manager.commands.stream().filter(
                                 (cmd) -> cmd.getCategory().equalsIgnoreCase(ct)
                         ).map(ICommand::getName).collect(Collectors.toList()).forEach(
-                                (name) -> str.append('`').append(name).append("` ")
+                                (name) -> str.append(name).append(", ")
                         );
+                        str.deleteCharAt(str.length() - 1);
+                        str.deleteCharAt(str.length() - 1);
+                        str.append("`");
+                        embed.addField(ct, str.toString(), false);
                     }
+
             );
-            ctx.getChannel().sendMessage(
-                    new EmbedBuilder()
-                            .setColor(Color.YELLOW)
-                            .setTitle("List of commands")
-                            .setDescription(str)
-                            .setFooter("Prefix: " + prefix)
-                            .build()
-            ).queue();
+            ctx.getChannel().sendMessage(embed.build()).queue();
             return;
         }
 
