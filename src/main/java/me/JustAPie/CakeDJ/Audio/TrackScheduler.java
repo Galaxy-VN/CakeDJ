@@ -32,7 +32,7 @@ public class TrackScheduler extends AudioEventAdapter {
         AudioTrack clone = track.makeClone();
         if (queueLoop) queue.offerLast(clone);
         else previousTrack.offerLast(clone);
-        this.player.startTrack(this.queue.poll(), true);
+        this.player.startTrack(this.queue.poll(), false);
     }
 
     public void shuffle() {
