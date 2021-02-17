@@ -15,23 +15,12 @@ public class EmbedUtils {
         ).queue();
     }
 
-    public static void errorMessage(TextChannel channel, String msg, String footer) {
-        channel.sendMessage(
-                new EmbedBuilder()
-                        .setColor(Color.RED)
-                        .setDescription(msg)
-                        .setFooter(footer)
-                        .build()
-        ).queue();
-    }
-
-    public static void errorMessage(TextChannel channel, String msg, String title, String footer) {
+    public static void errorMessage(TextChannel channel, String msg, String title) {
         channel.sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.RED)
                         .setTitle(title)
                         .setDescription(msg)
-                        .setFooter(footer)
                         .build()
         ).queue();
     }
@@ -45,23 +34,12 @@ public class EmbedUtils {
         ).queue();
     }
 
-    public static void successMessage(TextChannel channel, String msg, String footer) {
-        channel.sendMessage(
-                new EmbedBuilder()
-                        .setColor(Color.GREEN)
-                        .setDescription(msg)
-                        .setFooter(footer)
-                        .build()
-        ).queue();
-    }
-
-    public static void successMessage(TextChannel channel, String msg, String title, String footer) {
+    public static void successMessage(TextChannel channel, String title, String msg) {
         channel.sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.GREEN)
                         .setTitle(title)
                         .setDescription(msg)
-                        .setFooter(footer)
                         .build()
         ).queue();
     }

@@ -4,7 +4,9 @@ import me.JustAPie.CakeDJ.Audio.GuildMusicManager;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.Commands.Config.*;
 import me.JustAPie.CakeDJ.Commands.Info.HelpCommand;
+import me.JustAPie.CakeDJ.Commands.Info.InviteCommand;
 import me.JustAPie.CakeDJ.Commands.Info.PingCommand;
+import me.JustAPie.CakeDJ.Commands.Info.SupportCommand;
 import me.JustAPie.CakeDJ.Commands.Music.*;
 import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.EmbedUtils;
@@ -31,7 +33,9 @@ public class CommandManager {
         addCommand(new TFSCommand());
         // Info
         addCommand(new HelpCommand(this));
+        addCommand(new InviteCommand());
         addCommand(new PingCommand());
+        addCommand(new SupportCommand());
         // Music
         addCommand(new ClearCommand());
         addCommand(new EarrapeCommand());
