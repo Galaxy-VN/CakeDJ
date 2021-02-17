@@ -24,21 +24,26 @@ public class PlayCommand implements ICommand {
             EmbedUtils.errorMessage(ctx.getChannel(), "Please connect to the same voice channel");
             return;
         }
+        String toPlay;
         if (ctx.getArgs().isEmpty()) {
             List<Message.Attachment> attachments = ctx.getMessage().getAttachments();
-            if (
-                    attachments.isEmpty()
-                    || !attachments.get(0).getFileExtension().equals("mp3")
-            ) {
+            if (attachments.isEmpty()) {
+                EmbedUtils.errorMessage(ctx.getChannel(), "Please enter song's keyword or url or a file to play");
+                return;
             }
+            if (!attachments.get(0).getFileExtension().equals("mp3")) {
+                EmbedUtils.errorMessage(ctx.getChannel(), "Sorry, we currently not support this file extension");
+                return;
+            }
+            toPlay = attachments.get(0).getUrl();
         } else {
-            String toPlay = String.join(" ", ctx.getArgs());
+            toPlay = String.join(" ", ctx.getArgs());
             if (!Commons.isUrl(toPlay)) toPlay = "ytsearch:" + toPlay;
-            PlayerManager.getInstance().loadAndPlay(ctx.getChannel(), toPlay, ctx.getMember().getUser());
-            PlayerManager.getInstance().getMusicManager(ctx.getGuild()).audioPlayer.setVolume(
-                    DatabaseUtils.getGuildSetting(ctx.getGuild()).defaultVolume
-            );
         }
+        PlayerManager.getInstance().loadAndPlay(ctx.getChannel(), toPlay, ctx.getMember().getUser());
+        PlayerManager.getInstance().getMusicManager(ctx.getGuild()).audioPlayer.setVolume(
+                DatabaseUtils.getGuildSetting(ctx.getGuild()).defaultVolume
+        );
     }
 
     @Override
