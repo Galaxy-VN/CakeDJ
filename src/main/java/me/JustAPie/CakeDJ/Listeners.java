@@ -54,7 +54,7 @@ public class Listeners extends ListenerAdapter {
         } else {
             if (
                     event.getMessage().getMentionedMembers().contains(
-                            event.getJDA().getSelfUser()
+                            event.getGuild().getSelfMember()
                     )
             ) {
                 EmbedUtils.successMessage(event.getChannel(), "My prefix here is `" + guildConfig.prefix + "`");
