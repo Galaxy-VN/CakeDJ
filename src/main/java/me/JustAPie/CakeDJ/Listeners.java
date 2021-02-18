@@ -1,12 +1,8 @@
 package me.JustAPie.CakeDJ;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.Models.GuildConfig;
-import me.JustAPie.CakeDJ.Utils.Commons;
-import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
-import me.JustAPie.CakeDJ.Utils.EmbedUtils;
-import me.JustAPie.CakeDJ.Utils.TaskUtils;
+import me.JustAPie.CakeDJ.Utils.*;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -16,7 +12,6 @@ import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.discordbots.api.client.DiscordBotListAPI;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +32,7 @@ public class Listeners extends ListenerAdapter {
         TaskUtils.setInterval(new TimerTask() {
             @Override
             public void run() {
-                updateStats(event.getGuildTotalCount());
+                DSLUtils.updateServerCount(event.getGuildTotalCount());
             }
         }, (long) 1e4);
     }
@@ -108,16 +103,5 @@ public class Listeners extends ListenerAdapter {
     public void onGuildUpdateName(@NotNull GuildUpdateNameEvent event) {
         super.onGuildUpdateName(event);
         DatabaseUtils.updateGuildSetting(event.getGuild(), "guildName", event.getGuild().getName());
-    }
-
-    private void updateStats(int serverCount) {
-        DiscordBotListAPI api;
-        if (!Commons.getConfig("dbltoken").isEmpty()) {
-            api = new DiscordBotListAPI.Builder()
-                    .token(Commons.getConfig("dbltoken"))
-                    .botId(Commons.getConfig("clientid"))
-                    .build();
-            api.setStats(serverCount);
-        }
     }
 }
