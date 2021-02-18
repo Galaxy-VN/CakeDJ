@@ -2,7 +2,10 @@ package me.JustAPie.CakeDJ;
 
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.Models.GuildConfig;
-import me.JustAPie.CakeDJ.Utils.*;
+import me.JustAPie.CakeDJ.Utils.DSLUtils;
+import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
+import me.JustAPie.CakeDJ.Utils.EmbedUtils;
+import me.JustAPie.CakeDJ.Utils.TaskUtils;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -50,7 +53,9 @@ public class Listeners extends ListenerAdapter {
             manager.execute(event, guildConfig.prefix);
         } else {
             if (
-                    event.getMessage().getContentRaw().contains("<@" + Commons.getConfig("clientid") + ">")
+                    event.getMessage().getMentionedMembers().contains(
+                            event.getJDA().getSelfUser()
+                    )
             ) {
                 EmbedUtils.successMessage(event.getChannel(), "My prefix here is `" + guildConfig.prefix + "`");
             }
