@@ -22,6 +22,7 @@ public class EarrapeCommand implements ICommand {
             }
             player.setFilterFactory(eq);
         } else player.setFilterFactory(null);
+        manager.scheduler.earrape = status;
         EmbedUtils.successMessage(ctx.getChannel(), "Turned " + (status ? "on" : "off") + " earrape");
     }
 
