@@ -6,8 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.regex.Pattern;
 
 public class Commons {
+    public static final String mentionRegex = Pattern.compile("(<@)([1-9])\\d\\w+(>)").pattern();
+
     public static boolean isUrl(String url) {
         try {
             new URI(url);

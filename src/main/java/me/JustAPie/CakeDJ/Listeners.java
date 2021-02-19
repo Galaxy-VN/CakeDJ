@@ -4,9 +4,9 @@ import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.Models.GuildConfig;
 import me.JustAPie.CakeDJ.Utils.DSLUtils;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
-import me.JustAPie.CakeDJ.Utils.EmbedUtils;
 import me.JustAPie.CakeDJ.Utils.TaskUtils;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -43,22 +43,18 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
         super.onGuildMessageReceived(event);
-        if (event.getMessage().isWebhookMessage()) return;
-        if (event.getMessage().getAuthor().isBot()) return;
+        Message message = event.getMessage();
+        if (message.isWebhookMessage()) return;
+        if (message.getAuthor().isBot()) return;
         GuildConfig guildConfig = DatabaseUtils.getGuildSetting(event.getGuild());
-        if (event.getMessage().getContentRaw().startsWith(guildConfig.prefix)) {
+        String selfMention = "<@" + event.getJDA().getSelfUser().getId() + ">";
+        String prefix = guildConfig.prefix;
+        if (message.getContentRaw().startsWith(selfMention)) prefix = selfMention;
+        if (message.getContentRaw().startsWith(prefix)) {
             if (guildConfig.channelRestrict) {
                 if (!guildConfig.djOnlyChannels.contains(event.getChannel().getId())) return;
             }
-            manager.execute(event, guildConfig.prefix);
-        } else {
-            if (
-                    event.getMessage().getMentionedMembers().contains(
-                            event.getGuild().getSelfMember()
-                    )
-            ) {
-                EmbedUtils.successMessage(event.getChannel(), "My prefix here is `" + guildConfig.prefix + "`");
-            }
+            manager.execute(event, prefix);
         }
     }
 

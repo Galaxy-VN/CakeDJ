@@ -8,7 +8,9 @@ import me.JustAPie.CakeDJ.Commands.Info.InviteCommand;
 import me.JustAPie.CakeDJ.Commands.Info.PingCommand;
 import me.JustAPie.CakeDJ.Commands.Info.SupportCommand;
 import me.JustAPie.CakeDJ.Commands.Music.*;
+import me.JustAPie.CakeDJ.Models.GuildConfig;
 import me.JustAPie.CakeDJ.Utils.Commons;
+import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
 import me.JustAPie.CakeDJ.Utils.EmbedUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -72,8 +74,20 @@ public class CommandManager {
     }
 
     public void execute(GuildMessageReceivedEvent event, String prefix) {
-        String[] split = event.getMessage().getContentRaw()
-                .replaceFirst("(?i)" + Pattern.quote(prefix), "")
+        String raw = event.getMessage().getContentRaw();
+        if (prefix.matches(Commons.mentionRegex)) {
+            if (raw.length() == prefix.length()) {
+                GuildConfig guildConfig = DatabaseUtils.getGuildSetting(event.getGuild());
+                EmbedUtils.successMessage(event.getChannel(), "My prefix here is `" + guildConfig.prefix + "`");
+                return;
+            }
+            char[] ch = raw.toCharArray();
+            while (ch[prefix.length()] == ' ') {
+                raw = raw.replaceFirst("(?i)" + Pattern.quote(" "), "");
+                ch = raw.toCharArray();
+            }
+        }
+        String[] split = raw.replaceFirst("(?i)" + Pattern.quote(prefix), "")
                 .split("\\s+");
 
         String invoke = split[0].toLowerCase();
