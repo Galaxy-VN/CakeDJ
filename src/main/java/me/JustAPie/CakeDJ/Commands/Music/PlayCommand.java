@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import java.util.List;
 
 public class PlayCommand implements ICommand {
+    private static final List<String> formats = List.of("mp3", "ogg", "wav", "flac", "webm", "mp4", "m4a");
     @Override
     public void exec(CommandContext ctx) {
         VoiceChannel memberVoice = ctx.getMember().getVoiceState().getChannel();
@@ -31,7 +32,7 @@ public class PlayCommand implements ICommand {
                 EmbedUtils.errorMessage(ctx.getChannel(), "Please enter song's keyword or url or a file to play");
                 return;
             }
-            if (!attachments.get(0).getFileExtension().equals("mp3")) {
+            if (!formats.contains(attachments.get(0).getFileExtension())) {
                 EmbedUtils.errorMessage(ctx.getChannel(), "Sorry, we currently not support this file extension");
                 return;
             }
