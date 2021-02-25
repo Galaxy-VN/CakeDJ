@@ -47,15 +47,17 @@ public class Listeners extends ListenerAdapter {
         if (message.isWebhookMessage()) return;
         if (message.getAuthor().isBot()) return;
         GuildConfig guildConfig = DatabaseUtils.getGuildSetting(event.getGuild());
+        if (guildConfig == null) return;
         String selfMention = "<@" + event.getJDA().getSelfUser().getId() + ">";
+        String selfMention2 = "<@!" + event.getJDA().getSelfUser().getId() + ">";
         String prefix = guildConfig.prefix;
         if (message.getContentRaw().startsWith(selfMention)) prefix = selfMention;
-        if (message.getContentRaw().startsWith(prefix)) {
-            if (guildConfig.channelRestrict) {
-                if (!guildConfig.djOnlyChannels.contains(event.getChannel().getId())) return;
-            }
-            manager.execute(event, prefix);
+        if (message.getContentRaw().startsWith(selfMention2)) prefix = selfMention2;
+        if (!message.getContentRaw().startsWith(prefix)) return;
+        if (guildConfig.channelRestrict) {
+            if (!guildConfig.djOnlyChannels.contains(event.getChannel().getId())) return;
         }
+        manager.execute(event, prefix);
     }
 
     @Override
