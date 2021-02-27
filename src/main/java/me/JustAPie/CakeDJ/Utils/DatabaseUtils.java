@@ -47,16 +47,52 @@ public class DatabaseUtils {
     public static GuildConfig getGuildSetting(Guild guild) {
         if (!isCreated(guild)) return null;
         Document document = serverCollection.find(Filters.eq("guildID", guild.getId())).first();
-        return new GuildConfig()
-                .setGuildName(document.getString("guildName"))
-                .setGuildID(document.getString("guildID"))
-                .setPrefix(document.getString("prefix"))
-                .setIs247(document.getBoolean("is247"))
-                .setChannelRestrict(document.getBoolean("channelRestrict"))
-                .setMaxQueueLength(document.getLong("maxQueueLength"))
-                .setMaxSongsPerUser(document.getLong("maxSongsPerUser"))
-                .setDefaultVolume(document.getInteger("defaultVolume"))
-                .setDjOnlyChannels(document.getList("djOnlyChannels", String.class));
+        return new GuildConfig() {
+            @Override
+            public String guildName() {
+                return document.getString("guildName");
+            }
+
+            @Override
+            public String guildID() {
+                return document.getString("guildID");
+            }
+
+            @Override
+            public String prefix() {
+                return document.getString("prefix");
+            }
+
+            @Override
+            public boolean is247() {
+                return document.getBoolean("is247");
+            }
+
+            @Override
+            public boolean channelRestrict() {
+                return document.getBoolean("channelRestrict");
+            }
+
+            @Override
+            public long maxQueueLength() {
+                return document.getLong("maxQueueLength");
+            }
+
+            @Override
+            public long maxSongsPerUser() {
+                return document.getLong("maxSongsPerUser");
+            }
+
+            @Override
+            public int defaultVolume() {
+                return document.getInteger("defaultVolume");
+            }
+
+            @Override
+            public List<String> djOnlyChannels() {
+                return document.getList("djOnlyChannels", String.class);
+            }
+        };
     }
 
     public static void updateGuildSetting(Guild guild, String key, Object value) {
