@@ -11,7 +11,7 @@ import java.util.List;
 public class ChannelRestrictCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx) {
-        boolean channelRestrict = !DatabaseUtils.getGuildSetting(ctx.getGuild()).channelRestrict;
+        boolean channelRestrict = !DatabaseUtils.getGuildSetting(ctx.getGuild()).channelRestrict();
         String status = channelRestrict ? "on" : "off";
         DatabaseUtils.updateGuildSetting(ctx.getGuild(), "channelRestrict", channelRestrict);
         EmbedUtils.successMessage(ctx.getChannel(), "Turned " + status + " restrict mode");

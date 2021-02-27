@@ -1,6 +1,5 @@
 package me.JustAPie.CakeDJ.Commands.Info;
 
-import com.jagrosh.jdautilities.command.Command;
 import me.JustAPie.CakeDJ.CommandContext;
 import me.JustAPie.CakeDJ.CommandManager;
 import me.JustAPie.CakeDJ.ICommand;
@@ -8,7 +7,6 @@ import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +19,7 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void exec(CommandContext ctx)  {
-        String prefix = DatabaseUtils.getGuildSetting(ctx.getGuild()).prefix;
+        String prefix = DatabaseUtils.getGuildSetting(ctx.getGuild()).prefix();
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(Color.YELLOW)
                 .setTitle("List of commands")

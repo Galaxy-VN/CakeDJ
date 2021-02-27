@@ -50,12 +50,12 @@ public class Listeners extends ListenerAdapter {
         if (guildConfig == null) return;
         String selfMention = "<@" + event.getJDA().getSelfUser().getId() + ">";
         String selfMention2 = "<@!" + event.getJDA().getSelfUser().getId() + ">";
-        String prefix = guildConfig.prefix;
+        String prefix = guildConfig.prefix();
         if (message.getContentRaw().startsWith(selfMention)) prefix = selfMention;
         if (message.getContentRaw().startsWith(selfMention2)) prefix = selfMention2;
         if (!message.getContentRaw().startsWith(prefix)) return;
-        if (guildConfig.channelRestrict) {
-            if (!guildConfig.djOnlyChannels.contains(event.getChannel().getId())) return;
+        if (guildConfig.channelRestrict()) {
+            if (!guildConfig.djOnlyChannels().contains(event.getChannel().getId())) return;
         }
         manager.execute(event, prefix);
     }
@@ -72,7 +72,7 @@ public class Listeners extends ListenerAdapter {
             return;
         }
         if (event.getMember().getUser().isBot()) return;
-        if (DatabaseUtils.getGuildSetting(event.getGuild()).is247) return;
+        if (DatabaseUtils.getGuildSetting(event.getGuild()).is247()) return;
         VoiceChannel botVC = event.getGuild().getAudioManager().getConnectedChannel();
         if (botVC == null) return;
         VoiceChannel leftVC = event.getGuild().getVoiceChannelById(event.getChannelLeft().getId());

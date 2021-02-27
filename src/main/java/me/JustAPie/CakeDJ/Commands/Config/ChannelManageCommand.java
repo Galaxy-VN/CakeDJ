@@ -30,13 +30,13 @@ public class ChannelManageCommand implements ICommand {
                     EmbedUtils.errorMessage(ctx.getChannel(), "Invalid channel");
                     return;
                 }
-                List<String> list = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels;
+                List<String> list = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels();
                 list.add(toAdd);
                 DatabaseUtils.updateGuildSetting(ctx.getGuild(), "djOnlyChannels", list);
                 EmbedUtils.successMessage(ctx.getChannel(), "Channel added");
                 break;
             case "remove":
-                List<String> channels = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels;
+                List<String> channels = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels();
                 if (channels.isEmpty()) {
                     EmbedUtils.errorMessage(ctx.getChannel(), "There's nothing for you to remove");
                     return;

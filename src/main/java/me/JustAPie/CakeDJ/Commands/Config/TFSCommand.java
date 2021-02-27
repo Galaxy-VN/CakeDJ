@@ -10,7 +10,7 @@ import java.util.List;
 public class TFSCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx) {
-        boolean is247 = !DatabaseUtils.getGuildSetting(ctx.getGuild()).is247;
+        boolean is247 = !DatabaseUtils.getGuildSetting(ctx.getGuild()).is247();
         String status = is247 ? "on" : "off";
         DatabaseUtils.updateGuildSetting(ctx.getGuild(), "is247", is247);
         EmbedUtils.successMessage(ctx.getChannel(), "Turned " + status + " 24/7 function");

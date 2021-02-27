@@ -60,7 +60,7 @@ public class QueueCommand implements ICommand {
                 if (!Commons.isNaN(toChoose)) i = Integer.parseInt(toChoose);
             }
             List<AudioTrack> chose = paginatedQueue.get(i);
-            String prefix = DatabaseUtils.getGuildSetting(ctx.getGuild()).prefix;
+            String prefix = DatabaseUtils.getGuildSetting(ctx.getGuild()).prefix();
             EmbedBuilder embed = new EmbedBuilder()
                     .setColor(Color.YELLOW)
                     .setTitle("Queue")

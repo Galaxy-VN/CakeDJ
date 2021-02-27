@@ -43,7 +43,7 @@ public class PlayCommand implements ICommand {
         }
         PlayerManager.getInstance().loadAndPlay(ctx.getChannel(), toPlay, ctx.getMember().getUser());
         PlayerManager.getInstance().getMusicManager(ctx.getGuild()).audioPlayer.setVolume(
-                DatabaseUtils.getGuildSetting(ctx.getGuild()).defaultVolume
+                DatabaseUtils.getGuildSetting(ctx.getGuild()).defaultVolume()
         );
     }
 

@@ -78,7 +78,7 @@ public class CommandManager {
         if (prefix.matches(Commons.mentionRegex)) {
             if (raw.length() == prefix.length()) {
                 GuildConfig guildConfig = DatabaseUtils.getGuildSetting(event.getGuild());
-                EmbedUtils.successMessage(event.getChannel(), "My prefix here is `" + guildConfig.prefix + "`");
+                EmbedUtils.successMessage(event.getChannel(), "My prefix here is `" + guildConfig.prefix() + "`");
                 return;
             }
             char[] ch = raw.toCharArray();
