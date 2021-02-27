@@ -50,7 +50,7 @@ public class PlayerManager {
             public void trackLoaded(AudioTrack track) {
                 track.setUserData(requester.getAsTag());
                 long userSongs = musicManager.scheduler.queue.stream().filter((song) -> song.getUserData().equals(requester.getAsTag())).count();
-                if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser) {
+                if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser()) {
                     channel.sendMessage(
                             new EmbedBuilder()
                                     .setColor(Color.RED)
@@ -60,7 +60,7 @@ public class PlayerManager {
                     return;
                 }
                 long queueLength = musicManager.scheduler.queue.size();
-                if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength) {
+                if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength()) {
                     channel.sendMessage(
                             new EmbedBuilder()
                                     .setColor(Color.RED)
@@ -87,7 +87,7 @@ public class PlayerManager {
                     AudioTrack track = playlist.getTracks().get(0);
                     track.setUserData(requester.getAsTag());
                     long userSongs = musicManager.scheduler.queue.stream().filter((song) -> song.getUserData().equals(requester.getAsTag())).count() + 1;
-                    if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser) {
+                    if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser()) {
                         channel.sendMessage(
                                 new EmbedBuilder()
                                         .setColor(Color.RED)
@@ -97,7 +97,7 @@ public class PlayerManager {
                         return;
                     }
                     long queueLength = musicManager.scheduler.queue.size() + 1;
-                    if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength) {
+                    if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength()) {
                         channel.sendMessage(
                                 new EmbedBuilder()
                                         .setColor(Color.RED)
@@ -120,7 +120,7 @@ public class PlayerManager {
                 }
                 final List<AudioTrack> tracks = playlist.getTracks();
                 long userSongs = musicManager.scheduler.queue.stream().filter((song) -> song.getUserData().equals(requester.getAsTag())).count() + tracks.size();
-                if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser) {
+                if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser()) {
                     channel.sendMessage(
                             new EmbedBuilder()
                                     .setColor(Color.RED)
@@ -130,7 +130,7 @@ public class PlayerManager {
                     return;
                 }
                 long queueLength = musicManager.scheduler.queue.size() + tracks.size();
-                if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength) {
+                if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength()) {
                     channel.sendMessage(
                             new EmbedBuilder()
                                     .setColor(Color.RED)
