@@ -28,10 +28,7 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
-    public void nextTrack(AudioTrack track) {
-        AudioTrack clone = track.makeClone();
-        if (queueLoop) queue.offerLast(clone);
-        else previousTrack.offerLast(clone);
+    public void nextTrack() {
         this.player.startTrack(this.queue.poll(), false);
     }
 
@@ -46,7 +43,9 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason.mayStartNext) {
-            nextTrack(track);
+            if (queueLoop) queue.offerLast(track.makeClone());
+            else previousTrack.offerLast(track.makeClone());
+            nextTrack();
         }
     }
 }

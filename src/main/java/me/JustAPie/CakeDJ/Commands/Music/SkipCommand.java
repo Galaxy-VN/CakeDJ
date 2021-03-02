@@ -1,5 +1,6 @@
 package me.JustAPie.CakeDJ.Commands.Music;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.JustAPie.CakeDJ.Audio.GuildMusicManager;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.CommandContext;
@@ -16,7 +17,7 @@ public class SkipCommand implements ICommand {
             EmbedUtils.successMessage(ctx.getChannel(), "Turning loop mode off");
             gm.scheduler.queueLoop = false;
         }
-        gm.scheduler.nextTrack(gm.audioPlayer.getPlayingTrack());
+        gm.scheduler.onTrackEnd(gm.audioPlayer, gm.audioPlayer.getPlayingTrack(), AudioTrackEndReason.FINISHED);
         EmbedUtils.successMessage(ctx.getChannel(), "Skipped");
     }
 
