@@ -1,14 +1,13 @@
 package me.JustAPie.CakeDJ.Commands.Music;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import me.JustAPie.CakeDJ.Audio.GuildMusicManager;
-import me.JustAPie.CakeDJ.Audio.PlayerManager;
+import java.util.List;
+
 import me.JustAPie.CakeDJ.CommandContext;
 import me.JustAPie.CakeDJ.ICommand;
+import me.JustAPie.CakeDJ.Audio.GuildMusicManager;
+import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.EmbedUtils;
-
-import java.util.List;
 
 public class SkipToCommand implements ICommand {
     @Override
