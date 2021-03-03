@@ -74,13 +74,13 @@ public class DatabaseUtils {
             }
 
             @Override
-            public long maxQueueLength() {
-                return document.getLong("maxQueueLength");
+            public int maxQueueLength() {
+                return document.getInteger("maxQueueLength");
             }
 
             @Override
-            public long maxSongsPerUser() {
-                return document.getLong("maxSongsPerUser");
+            public int maxSongsPerUser() {
+                return document.getInteger("maxSongsPerUser");
             }
 
             @Override

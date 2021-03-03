@@ -8,8 +8,8 @@ public interface GuildConfig {
     String prefix();
     boolean is247();
     boolean channelRestrict();
-    long maxQueueLength();
-    long maxSongsPerUser();
+    int maxQueueLength();
+    int maxSongsPerUser();
     int defaultVolume();
     List<String> djOnlyChannels();
 }
