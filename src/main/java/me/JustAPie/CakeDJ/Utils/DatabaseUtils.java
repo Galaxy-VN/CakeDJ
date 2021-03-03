@@ -36,8 +36,8 @@ public class DatabaseUtils {
                 .append("prefix", Commons.getConfig("prefix"))
                 .append("is247", false)
                 .append("channelRestrict", false)
-                .append("maxQueueLength", 1000L)
-                .append("maxSongsPerUser", 1000L)
+                .append("maxQueueLength", 1000)
+                .append("maxSongsPerUser", 1000)
                 .append("defaultVolume", 100)
                 .append("djOnlyChannels", List.of());
         serverCollection.insertOne(document);
