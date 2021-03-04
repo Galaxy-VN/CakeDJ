@@ -34,7 +34,10 @@ public class PreviousCommand implements ICommand {
         ctx.getChannel().sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.GREEN)
-                        .setAuthor(toAdd.getUserData().toString())
+                        .setAuthor(
+                                toAdd.getUserData().toString(),
+                                null,
+                                ctx.getGuild().getMemberByTag(toAdd.getUserData().toString()).getUser().getAvatarUrl())
                         .setTitle("Seeked to previous song")
                         .addField("Title", toAdd.getInfo().title, false)
                         .addField("Duration", TimeUtils.formatTime(toAdd.getDuration()), false)
