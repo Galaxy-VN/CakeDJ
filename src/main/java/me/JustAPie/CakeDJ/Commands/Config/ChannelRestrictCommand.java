@@ -12,6 +12,13 @@ public class ChannelRestrictCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx) {
         boolean channelRestrict = !DatabaseUtils.getGuildSetting(ctx.getGuild()).channelRestrict();
+        List<String> channels = DatabaseUtils.getGuildSetting(ctx.getGuild()).djOnlyChannels();
+        if (channels.isEmpty()) {
+            EmbedUtils.errorMessage(ctx.getChannel(),
+                    "Please add at least one channel to the unrestricted channels before enabling channel restrict function",
+                    "WARNING!");
+            return;
+        }
         String status = channelRestrict ? "on" : "off";
         DatabaseUtils.updateGuildSetting(ctx.getGuild(), "channelRestrict", channelRestrict);
         EmbedUtils.successMessage(ctx.getChannel(), "Turned " + status + " restrict mode");
