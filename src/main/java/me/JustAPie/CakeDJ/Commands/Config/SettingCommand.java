@@ -8,12 +8,18 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SettingCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx) {
         GuildConfig config = DatabaseUtils.getGuildSetting(ctx.getGuild());
+        List<String> channels = new ArrayList<>();
+        for (String s : config.djOnlyChannels()) {
+            String c = "#" + ctx.getGuild().getGuildChannelById(s).getName();
+            channels.add(c);
+        }
         ctx.getChannel().sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.YELLOW)
@@ -25,7 +31,7 @@ public class SettingCommand implements ICommand {
                         .addField("Maximum Song per Member", String.valueOf(config.maxSongsPerUser()), true)
                         .addField("Restrict Mode", (config.channelRestrict() ? "Enabled" : "Disabled"), true)
                         .addField("DJ-Only Channels",
-                                (config.djOnlyChannels().isEmpty() ? "Empty" : "`" + String.join(", ", config.djOnlyChannels()) + "`"),
+                                (config.djOnlyChannels().isEmpty() ? "Empty" : "`" + String.join(", ", channels) + "`"),
                                 true)
                         .build()
         ).queue();
