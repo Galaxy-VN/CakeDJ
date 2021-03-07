@@ -32,6 +32,7 @@ public class CommandManager {
         addCommand(new MaxQueueCommand());
         addCommand(new MaxSongPerUserCommand());
         addCommand(new PrefixCommand());
+        addCommand(new SettingCommand());
         addCommand(new TFSCommand());
         // Info
         addCommand(new HelpCommand(this));
