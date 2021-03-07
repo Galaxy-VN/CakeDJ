@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
@@ -19,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.TimerTask;
 
 public class Listeners extends ListenerAdapter {
@@ -88,6 +91,14 @@ public class Listeners extends ListenerAdapter {
                 }
             }, 30000);
         }
+    }
+
+    @Override
+    public void onTextChannelDelete(@NotNull TextChannelDeleteEvent event) {
+        super.onTextChannelDelete(event);
+        List<String> ids = DatabaseUtils.getGuildSetting(event.getGuild()).djOnlyChannels();
+        if (ids.contains(event.getChannel().getId())) ids.removeAll(Collections.singleton(event.getChannel().getId()));
+        DatabaseUtils.updateGuildSetting(event.getGuild(), "djOnlyChannels", ids);
     }
 
     @Override
