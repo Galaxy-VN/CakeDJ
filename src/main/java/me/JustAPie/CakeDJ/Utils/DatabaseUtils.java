@@ -39,8 +39,16 @@ public class DatabaseUtils {
                 .append("maxQueueLength", 1000)
                 .append("maxSongsPerUser", 1000)
                 .append("defaultVolume", 100)
-                .append("djOnlyChannels", List.of());
+                .append("djOnlyChannels", List.of())
+                .append("leaveTimeout", 30000L);
         serverCollection.insertOne(document);
+    }
+
+    public static void bulkUpdate(String key, Object value) {
+        serverCollection.find().forEach((doc) -> {
+            String guildID = doc.getString("guildID");
+            serverCollection.findOneAndUpdate(Filters.eq(new Document(guildID, guildID)), new Document("$set", new Document(key, value)));
+        });
     }
 
     @Nullable
@@ -86,6 +94,11 @@ public class DatabaseUtils {
             @Override
             public int defaultVolume() {
                 return document.getInteger("defaultVolume");
+            }
+
+            @Override
+            public long leaveTimeout() {
+                return document.getLong("leaveTimeout");
             }
 
             @Override

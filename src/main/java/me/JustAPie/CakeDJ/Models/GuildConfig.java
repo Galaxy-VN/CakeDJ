@@ -11,5 +11,6 @@ public interface GuildConfig {
     int maxQueueLength();
     int maxSongsPerUser();
     int defaultVolume();
+    long leaveTimeout();
     List<String> djOnlyChannels();
 }

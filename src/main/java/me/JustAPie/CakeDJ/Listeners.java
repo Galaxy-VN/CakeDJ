@@ -89,7 +89,7 @@ public class Listeners extends ListenerAdapter {
                     PlayerManager.getInstance().getMusicManager(event.getGuild()).audioPlayer.destroy();
                     event.getGuild().getAudioManager().closeAudioConnection();
                 }
-            }, 30000);
+            }, DatabaseUtils.getGuildSetting(event.getGuild()).leaveTimeout());
         }
     }
 
