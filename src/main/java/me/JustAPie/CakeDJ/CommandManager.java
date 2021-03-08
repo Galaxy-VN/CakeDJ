@@ -29,6 +29,7 @@ public class CommandManager {
         addCommand(new ChannelManageCommand());
         addCommand(new ChannelRestrictCommand());
         addCommand(new DefaultVolumeCommand());
+        addCommand(new LeaveTimeout());
         addCommand(new MaxQueueCommand());
         addCommand(new MaxSongPerUserCommand());
         addCommand(new PrefixCommand());
@@ -52,6 +53,7 @@ public class CommandManager {
         addCommand(new QueueCommand());
         addCommand(new RemoveCommand());
         addCommand(new RepeatCommand());
+        addCommand(new RestartCommand());
         addCommand(new ResumeCommand());
         addCommand(new SeekCommand());
         addCommand(new ShuffleCommand());

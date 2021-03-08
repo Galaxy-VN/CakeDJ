@@ -28,6 +28,8 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
+    public void forceStart(AudioTrack track) { this.player.startTrack(track, false); }
+
     public void nextTrack() {
         this.player.startTrack(this.queue.poll(), false);
     }
