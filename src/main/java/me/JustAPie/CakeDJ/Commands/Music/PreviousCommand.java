@@ -5,7 +5,7 @@ import me.JustAPie.CakeDJ.Audio.GuildMusicManager;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.CommandContext;
 import me.JustAPie.CakeDJ.ICommand;
-import me.JustAPie.CakeDJ.Utils.TimeUtils;
+import me.JustAPie.CakeDJ.Utils.EmbedUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
@@ -31,18 +31,7 @@ public class PreviousCommand implements ICommand {
         }
         guildMusicManager.scheduler.queue.addFirst(toAdd);
         guildMusicManager.scheduler.nextTrack();
-        ctx.getChannel().sendMessage(
-                new EmbedBuilder()
-                        .setColor(Color.GREEN)
-                        .setAuthor(
-                                toAdd.getUserData().toString(),
-                                null,
-                                ctx.getGuild().getMemberByTag(toAdd.getUserData().toString()).getUser().getAvatarUrl())
-                        .setTitle("Seeked to previous song")
-                        .addField("Title", toAdd.getInfo().title, false)
-                        .addField("Duration", TimeUtils.formatTime(toAdd.getDuration()), false)
-                        .build()
-        ).queue();
+        EmbedUtils.successMessage(ctx.getChannel(), "Now playing the previous track");
     }
 
     @Override
