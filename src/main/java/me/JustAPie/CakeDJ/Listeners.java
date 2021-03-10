@@ -106,9 +106,10 @@ public class Listeners extends ListenerAdapter {
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
         super.onGuildJoin(event);
         DatabaseUtils.createGuild(event.getGuild());
-        event.getGuild().getOwner().getUser().openPrivateChannel().queue(
-                (channel) -> channel.sendMessage(Commons.welcomeEmbed).queue()
-        );
+        try {
+            event.getGuild().getDefaultChannel().sendMessage(Commons.welcomeEmbed).queue();
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
