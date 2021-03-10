@@ -2,6 +2,7 @@ package me.JustAPie.CakeDJ;
 
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.Models.GuildConfig;
+import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.DSLUtils;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
 import me.JustAPie.CakeDJ.Utils.TaskUtils;
@@ -105,6 +106,9 @@ public class Listeners extends ListenerAdapter {
     public void onGuildJoin(@NotNull GuildJoinEvent event) {
         super.onGuildJoin(event);
         DatabaseUtils.createGuild(event.getGuild());
+        event.getGuild().getOwner().getUser().openPrivateChannel().queue(
+                (channel) -> channel.sendMessage(Commons.welcomeEmbed).queue()
+        );
     }
 
     @Override
