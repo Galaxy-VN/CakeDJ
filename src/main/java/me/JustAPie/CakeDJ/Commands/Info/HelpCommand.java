@@ -25,7 +25,7 @@ public class HelpCommand implements ICommand {
                 .setTitle("List of commands")
                 .setFooter("Prefix: " + prefix + " | Use " + prefix + getUsage() + " for more information");
         if (ctx.getArgs().size() == 0) {
-            List<String> cat = this.manager.commands.stream().map(ICommand::getCategory).distinct().collect(Collectors.toList());
+            List<String> cat = this.manager.commands.stream().map(ICommand::getCategory).sorted().distinct().collect(Collectors.toList());
             cat.forEach(
                     (ct) -> {
                         StringBuilder str = new StringBuilder("`");

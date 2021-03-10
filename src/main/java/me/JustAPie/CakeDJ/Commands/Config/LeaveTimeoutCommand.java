@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.Permission;
 
 import java.util.List;
 
-public class LeaveTimeout implements ICommand {
+public class LeaveTimeoutCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx) {
         String r = ctx.getArgs().get(0);
@@ -34,7 +34,7 @@ public class LeaveTimeout implements ICommand {
 
     @Override
     public String getCategory() {
-        return "config";
+        return "Config";
     }
 
     @Override

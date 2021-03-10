@@ -25,22 +25,19 @@ import java.util.regex.Pattern;
 public class CommandManager {
     public final List<ICommand> commands = new ArrayList<>();
     public CommandManager() {
-        // Config
         addCommand(new ChannelManageCommand());
         addCommand(new ChannelRestrictCommand());
         addCommand(new DefaultVolumeCommand());
-        addCommand(new LeaveTimeout());
+        addCommand(new LeaveTimeoutCommand());
         addCommand(new MaxQueueCommand());
         addCommand(new MaxSongPerUserCommand());
         addCommand(new PrefixCommand());
         addCommand(new SettingCommand());
         addCommand(new TFSCommand());
-        // Info
         addCommand(new HelpCommand(this));
         addCommand(new InviteCommand());
         addCommand(new PingCommand());
         addCommand(new SupportCommand());
-        // Music
         addCommand(new ClearCommand());
         addCommand(new EarrapeCommand());
         addCommand(new JoinCommand());
