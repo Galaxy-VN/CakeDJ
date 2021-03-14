@@ -12,7 +12,7 @@ public class PrefixCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx) {
         DatabaseUtils.updateGuildSetting(ctx.getGuild(), "prefix", ctx.getArgs().get(0));
-        EmbedUtils.successMessage(ctx.getChannel(), "Updated prefix to `" + ctx.getArgs().get(0) + "`");
+        EmbedUtils.successMessage(ctx.getChannel(), "Prefix updated to `" + ctx.getArgs().get(0) + "`");
     }
 
     @Override
