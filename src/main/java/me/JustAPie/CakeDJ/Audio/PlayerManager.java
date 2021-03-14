@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
 import me.JustAPie.CakeDJ.Utils.TimeUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -168,6 +169,7 @@ public class PlayerManager {
 
             @Override
             public void loadFailed(FriendlyException exception) {
+                Commons.sendOwner(exception.getMessage(), exception.getStackTrace().toString(), channel.getJDA());
                 channel.sendMessage(
                         new EmbedBuilder()
                                 .setColor(Color.RED)
