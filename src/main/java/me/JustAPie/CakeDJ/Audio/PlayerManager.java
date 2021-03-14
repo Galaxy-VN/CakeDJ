@@ -7,8 +7,10 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.JustAPie.CakeDJ.Models.GuildConfig;
 import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
+import me.JustAPie.CakeDJ.Utils.EmbedUtils;
 import me.JustAPie.CakeDJ.Utils.TimeUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -22,7 +24,6 @@ import java.util.Map;
 
 public class PlayerManager {
     private static PlayerManager INSTANCE;
-
     private final Map<Long, GuildMusicManager> musicManagers;
     private final AudioPlayerManager audioPlayerManager;
 
@@ -45,31 +46,30 @@ public class PlayerManager {
 
     public void loadAndPlay(TextChannel channel, String trackUrl, User requester) {
         final GuildMusicManager musicManager = this.getMusicManager(channel.getGuild());
-
         this.audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+            private final GuildConfig config = DatabaseUtils.getGuildSetting(channel.getGuild());
+            private final String errorMsg = "Maximum songs exceeded";
+
+            private boolean check(int playlistSize) {
+                long userSongs = musicManager.scheduler.queue.stream().filter(
+                        (c) -> c.getUserData().equals(requester.getAsTag())
+                ).count() + playlistSize;
+                long queueLength = musicManager.scheduler.queue.size() + playlistSize;
+                if (userSongs > config.maxSongsPerUser()) {
+                    EmbedUtils.errorMessage(channel, errorMsg);
+                    return false;
+                }
+                if (queueLength > config.maxQueueLength()) {
+                    EmbedUtils.errorMessage(channel, errorMsg);
+                    return false;
+                }
+                return true;
+            }
+
             @Override
             public void trackLoaded(AudioTrack track) {
                 track.setUserData(requester.getAsTag());
-                long userSongs = musicManager.scheduler.queue.stream().filter((song) -> song.getUserData().equals(requester.getAsTag())).count();
-                if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser()) {
-                    channel.sendMessage(
-                            new EmbedBuilder()
-                                    .setColor(Color.RED)
-                                    .setDescription("❌ Maximum songs per user exceeded")
-                                    .build()
-                    ).queue();
-                    return;
-                }
-                long queueLength = musicManager.scheduler.queue.size();
-                if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength()) {
-                    channel.sendMessage(
-                            new EmbedBuilder()
-                                    .setColor(Color.RED)
-                                    .setDescription("❌ Maximum songs in queue exceeded")
-                                    .build()
-                    ).queue();
-                    return;
-                }
+                if (!check(1)) return;
                 musicManager.scheduler.queue(track);
                 channel.sendMessage(
                         new EmbedBuilder()
@@ -85,28 +85,9 @@ public class PlayerManager {
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
                 if (trackUrl.contains("ytsearch:")) {
+                    if (!check(1)) return;
                     AudioTrack track = playlist.getTracks().get(0);
                     track.setUserData(requester.getAsTag());
-                    long userSongs = musicManager.scheduler.queue.stream().filter((song) -> song.getUserData().equals(requester.getAsTag())).count() + 1;
-                    if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser()) {
-                        channel.sendMessage(
-                                new EmbedBuilder()
-                                        .setColor(Color.RED)
-                                        .setDescription("❌ Maximum songs per user exceeded")
-                                        .build()
-                        ).queue();
-                        return;
-                    }
-                    long queueLength = musicManager.scheduler.queue.size() + 1;
-                    if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength()) {
-                        channel.sendMessage(
-                                new EmbedBuilder()
-                                        .setColor(Color.RED)
-                                        .setDescription("❌ Maximum songs in queue exceeded")
-                                        .build()
-                        ).queue();
-                        return;
-                    }
                     musicManager.scheduler.queue(track);
                     channel.sendMessage(
                             new EmbedBuilder()
@@ -120,26 +101,7 @@ public class PlayerManager {
                     return;
                 }
                 final List<AudioTrack> tracks = playlist.getTracks();
-                long userSongs = musicManager.scheduler.queue.stream().filter((song) -> song.getUserData().equals(requester.getAsTag())).count() + tracks.size();
-                if (userSongs > DatabaseUtils.getGuildSetting(channel.getGuild()).maxSongsPerUser()) {
-                    channel.sendMessage(
-                            new EmbedBuilder()
-                                    .setColor(Color.RED)
-                                    .setDescription("❌ Maximum songs per user exceeded")
-                                    .build()
-                    ).queue();
-                    return;
-                }
-                long queueLength = musicManager.scheduler.queue.size() + tracks.size();
-                if (queueLength > DatabaseUtils.getGuildSetting(channel.getGuild()).maxQueueLength()) {
-                    channel.sendMessage(
-                            new EmbedBuilder()
-                                    .setColor(Color.RED)
-                                    .setDescription("❌ Maximum songs in queue exceeded")
-                                    .build()
-                    ).queue();
-                    return;
-                }
+                if (!check(tracks.size())) return;
                 for (final AudioTrack track : tracks) {
                     musicManager.scheduler.queue(track);
                     track.setUserData(requester.getAsTag());
