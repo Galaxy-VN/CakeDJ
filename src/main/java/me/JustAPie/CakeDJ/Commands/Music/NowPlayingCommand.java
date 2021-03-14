@@ -1,6 +1,7 @@
 package me.JustAPie.CakeDJ.Commands.Music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.CommandContext;
 import me.JustAPie.CakeDJ.ICommand;
@@ -15,17 +16,18 @@ public class NowPlayingCommand implements ICommand {
     @Override
     public void exec(CommandContext ctx) {
         AudioPlayer player = PlayerManager.getInstance().getMusicManager(ctx.getGuild()).audioPlayer;
+        AudioTrack track = player.getPlayingTrack();
         ctx.getChannel().sendMessage(
                 new EmbedBuilder()
                         .setColor(Color.YELLOW)
                         .setAuthor(player.getPlayingTrack().getUserData().toString(),
                                 null,
                                 ctx.getGuild().getMemberByTag
-                                        (player.getPlayingTrack().getUserData().toString()).getUser().getAvatarUrl())
+                                        (track.getUserData().toString()).getUser().getAvatarUrl())
                         .setTitle("Now playing")
-                        .addField("Title", player.getPlayingTrack().getInfo().title, false)
-                        .addField("Duration", TimeUtils.formatTime(player.getPlayingTrack().getDuration()), false)
-                        .addField("Progress", Commons.getProgressBar(player.getPlayingTrack()), false)
+                        .addField("Title", Commons.createHyperlink(track.getInfo().uri, track.getInfo().title), false)
+                        .addField("Duration", TimeUtils.formatTime(track.getDuration()), false)
+                        .addField("Progress", Commons.getProgressBar(track), false)
                         .build()
         ).queue();
     }

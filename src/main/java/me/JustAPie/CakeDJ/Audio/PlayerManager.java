@@ -76,7 +76,7 @@ public class PlayerManager {
                                 .setColor(Color.GREEN)
                                 .setAuthor(track.getUserData().toString(), null, channel.getGuild().getMemberByTag(track.getUserData().toString()).getUser().getAvatarUrl())
                                 .setTitle("Song enqueued")
-                                .addField("Title", track.getInfo().title, false)
+                                .addField("Title", Commons.createHyperlink(track.getInfo().uri, track.getInfo().title), false)
                                 .addField("Duration", TimeUtils.formatTime(track.getDuration()), false)
                                 .build()
                 ).queue();
@@ -94,7 +94,7 @@ public class PlayerManager {
                                     .setColor(Color.GREEN)
                                     .setTitle("Song enqueued")
                                     .setAuthor(track.getUserData().toString(), null, channel.getGuild().getMemberByTag(track.getUserData().toString()).getUser().getAvatarUrl())
-                                    .addField("Title", track.getInfo().title, false)
+                                    .addField("Title", Commons.createHyperlink(track.getInfo().uri, track.getInfo().title), false)
                                     .addField("Duration", TimeUtils.formatTime(track.getDuration()), false)
                                     .build()
                     ).queue();

@@ -10,7 +10,6 @@ import me.JustAPie.CakeDJ.ICommand;
 import me.JustAPie.CakeDJ.Utils.Commons;
 import me.JustAPie.CakeDJ.Utils.DatabaseUtils;
 import me.JustAPie.CakeDJ.Utils.EmbedUtils;
-import me.JustAPie.CakeDJ.Utils.TimeUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
@@ -25,21 +24,7 @@ public class QueueCommand implements ICommand {
             AudioPlayer player = gm.audioPlayer;
             if (player.getPlayingTrack() == null) {
                 EmbedUtils.errorMessage(ctx.getChannel(), "There is no song playing");
-            } else {
-                ctx.getChannel().sendMessage(
-                        new EmbedBuilder()
-                                .setColor(Color.YELLOW)
-                                .setAuthor(player.getPlayingTrack().getUserData().toString(),
-                                        null,
-                                        ctx.getGuild().getMemberByTag
-                                                (player.getPlayingTrack().getUserData().toString()).getUser().getAvatarUrl())
-                                .setTitle("Now playing")
-                                .addField("Title", player.getPlayingTrack().getInfo().title, false)
-                                .addField("Duration", TimeUtils.formatTime(player.getPlayingTrack().getDuration()), false)
-                                .addField("Progress", Commons.getProgressBar(player.getPlayingTrack()), false)
-                                .build()
-                ).queue();
-            }
+            } else new NowPlayingCommand().exec(ctx);
             return;
         }
         if (queue.size() <= 10) {

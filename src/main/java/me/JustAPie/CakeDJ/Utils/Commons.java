@@ -42,6 +42,10 @@ public class Commons {
         return Dotenv.load().get(key);
     }
 
+    public static String createHyperlink(String url, String title) {
+        return '[' + title + "](" + url + ")";
+    }
+
     public static boolean isNaN(String s) {
         try {
             Long.parseLong(s);
