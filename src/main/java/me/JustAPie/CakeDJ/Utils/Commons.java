@@ -3,14 +3,12 @@ package me.JustAPie.CakeDJ.Utils;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 public class Commons {
@@ -58,20 +56,8 @@ public class Commons {
     public static String getProgressBar(AudioTrack track) {
         float percentage = (100f / track.getDuration() * track.getPosition());
         return "`" + TimeUtils.formatTime(track.getPosition()) + "` [" + StringUtils.repeat("▬", (int) Math.round((double) percentage / 10)) +
-                "](https://github.com/JustAPieOP/JustADJ-JDA)" +
+                "](https://github.com/JustAPieOP/CakeDJ)" +
                 StringUtils.repeat("▬", 10 - (int) Math.round((double) percentage / 10)) +
                 " `" + TimeUtils.formatTime(track.getDuration()) + "`";
-    }
-
-    public static void sendOwner(String exception, String stackTrace, JDA jda) {
-        jda.getUserById(Commons.getConfig("ownerID")).openPrivateChannel().queue((channel) -> {
-            channel.sendMessage(
-                    new EmbedBuilder()
-                            .setTitle(exception)
-                            .setDescription(stackTrace)
-                            .setFooter(new Date().toString())
-                            .build()
-            ).queue();
-        });
     }
 }

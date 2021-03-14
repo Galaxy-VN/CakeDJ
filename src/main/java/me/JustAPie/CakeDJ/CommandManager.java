@@ -96,11 +96,7 @@ public class CommandManager {
         boolean chk = check(event, args, cmd);
         if (!chk) return;
         CommandContext ctx = new CommandContext(event, args);
-        try {
-            cmd.exec(ctx);
-        } catch (Exception e) {
-            Commons.sendOwner(e.getMessage(), Arrays.toString(e.getStackTrace()), event.getJDA());
-        }
+        cmd.exec(ctx);
     }
 
     private boolean check(GuildMessageReceivedEvent event, List<String> args, ICommand command) {

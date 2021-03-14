@@ -131,7 +131,6 @@ public class PlayerManager {
 
             @Override
             public void loadFailed(FriendlyException exception) {
-                Commons.sendOwner(exception.getMessage(), exception.getStackTrace().toString(), channel.getJDA());
                 channel.sendMessage(
                         new EmbedBuilder()
                                 .setColor(Color.RED)
