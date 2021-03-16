@@ -3,10 +3,7 @@ package me.JustAPie.CakeDJ;
 import me.JustAPie.CakeDJ.Audio.GuildMusicManager;
 import me.JustAPie.CakeDJ.Audio.PlayerManager;
 import me.JustAPie.CakeDJ.Commands.Config.*;
-import me.JustAPie.CakeDJ.Commands.Info.HelpCommand;
-import me.JustAPie.CakeDJ.Commands.Info.InviteCommand;
-import me.JustAPie.CakeDJ.Commands.Info.PingCommand;
-import me.JustAPie.CakeDJ.Commands.Info.SupportCommand;
+import me.JustAPie.CakeDJ.Commands.Info.*;
 import me.JustAPie.CakeDJ.Commands.Music.*;
 import me.JustAPie.CakeDJ.Models.GuildConfig;
 import me.JustAPie.CakeDJ.Utils.Commons;
@@ -25,6 +22,7 @@ import java.util.regex.Pattern;
 public class CommandManager {
     public final List<ICommand> commands = new ArrayList<>();
     public CommandManager() {
+        addCommand(new BotInfoCommand());
         addCommand(new ChannelManageCommand());
         addCommand(new ChannelRestrictCommand());
         addCommand(new DefaultVolumeCommand());

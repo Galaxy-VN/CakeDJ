@@ -33,6 +33,11 @@ public class SettingCommand implements ICommand {
                         .addField("DJ-Only Channels",
                                 (config.djOnlyChannels().isEmpty() ? "Empty" : "`" + String.join(", ", channels) + "`"),
                                 true)
+                        .addField(
+                                "Voice leaving timeout",
+                                config.leaveTimeout() / 1000
+                                        + (config.leaveTimeout() / 1000 > 1 ? " seconds" : " second"),
+                                true)
                         .build()
         ).queue();
     }
