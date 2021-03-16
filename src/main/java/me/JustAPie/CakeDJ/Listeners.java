@@ -107,7 +107,11 @@ public class Listeners extends ListenerAdapter {
         super.onGuildJoin(event);
         DatabaseUtils.createGuild(event.getGuild());
         try {
-            event.getGuild().getDefaultChannel().sendMessage(Commons.welcomeEmbed).queue();
+            event.getGuild().getDefaultChannel().sendMessage(
+                    Commons.welcomeEmbed
+                            .setFooter("For more support, DM " + event.getJDA().getUserById(Commons.getConfig("ownerid")).getAsTag())
+                            .build()
+            ).queue();
         } catch (Exception ignored) {
         }
     }
